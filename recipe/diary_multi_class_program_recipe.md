@@ -22,13 +22,105 @@ I want to keep a todo list along with my diary
 So that I can keep track of my contacts
 I want to see a list of all of the mobile phone numbers in all my diary entries
 
+take aways - 
+1) first class = diary: input diary entries, save diary entries
+2) second class = diary entries: output
+3) analyse diary entries given users criteria(wpm, readspeed)
+4) third class = todo: input todo entries, save todo, output todo
+5) extract phone numbers from diary entries
+
+key words -
+1) n - diary, diary entries
+   v - record, keep
+2) n - diary entries
+   v - read
+3) n - time, reading speed, diary entries
+   v - select 
+4) n - tasks, diary entries 
+   v - keep, track
+5) n - mobile numbers, list, diary entries
+   v - keep, track, list
+
 ## 2. Design the Class System
 
-Design the interfaces of each of your classes and how they will work together to achieve the job of the program. You can use diagrams to visualise the relationships between classes.
+```Ruby
+#.lib/diary.rb
+class Diary 
 
-Consider pulling out the key verbs and nouns in the problem description to help you figure out which classes and methods to have.
+  public 
 
-Steps 3, 4, and 5 then operate as a cycle.
+  def initialize
+   @diary_list = []
+   @todo_list = []
+   @mobile_numbers = []
+  end 
+
+  def add (entry)
+  #Instance of diary_entry class
+  #Returns Nothing 
+  # Adds to diary entry list 
+  end 
+
+  def display
+  #Returns list of diary entries
+
+  end 
+
+  def best_entry (wpm,time)
+
+  # Deliberate choice: returns the SINGLE largest diary entry that can be 
+  #read within reading time. Not how many entries can be provided within reading time 
+  # wpm is an integer, provided each time the method is called (ie not set somewhere else)
+  # time is an integer, provided each time the method is called (ie not set somewhere else)
+
+
+  end 
+
+  def show_todo_list 
+    #returns todo list
+  end
+
+  def show_mobile_numbers
+    #returns a list of mobile numbers taken from entries
+  end
+
+  private
+
+  def add_todo
+    #add entry to todo list if it contains todo
+  end
+
+  def add_mobile
+    #entracts mobile number and adds it to mobile number list
+  end
+
+end 
+
+class DiaryEntry 
+
+  def ininitialize (text)
+    #text is a string that contains an entry for the diary 
+  end 
+
+  def contents 
+    #returns text 
+  end 
+
+  def length_of_entry
+    #return word count as an integer
+  end
+
+  def contains_todo?
+    #returns true/false depending on whether todo present
+  end
+
+  def contains_mobile_number?
+    #returns true/false depending on whether entry contains a valid mobile number
+  end
+
+end 
+
+```
 
 ## 3. Create Examples as Integration Tests
 
