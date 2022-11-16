@@ -345,6 +345,51 @@ diary_entry1 = DiaryEntry.new("feed cat #TODO")
 diary_entry2 = DiaryEntry.new("#TODO find cat again")
 diary.show_todo_list # => ["feed cat #TODO", "#TODO find cat again"]
 
+#14 - given a diary entry of an empty string, show mobile numbers returns an empty list
+
+diary = Diary.new
+diary_entry1 = DiaryEntry.new("")
+diary.add(diary_entry1)
+diary.show_mobile_list # => []
+
+#15 - given a non empty string wherein contains mobile number is false 
+
+diary = Diary.new
+diary_entry1 = DiaryEntry.new("#TODO")
+diary.add(diary_entry1)
+diary.show_mobile_list # => []
+
+#16 - given a diary entry which only contains a phone number
+
+diary = Diary.new
+diary_entry1 = DiaryEntry.new("08001231234")
+diary.add(diary_entry1)
+diary.show_mobile_list # => ["08001231234"]
+
+#17 - given a diary entry containing two phone numbers
+
+diary = Diary.new
+diary_entry1 = DiaryEntry.new("08001231234: old number, 08001234321: new number")
+diary.add(diary_entry1)
+diary.show_mobile_list # => ["08001231234", "08001234321"]
+
+#18 - given two instances of diary entry, each containing a phone number
+
+diary = Diary.new
+diary_entry1 = DiaryEntry.new("08001231235: old number")
+diary_entry2 = DiaryEntry.new("08001234322: new number")
+diary.add(diary_entry1)
+diary.add(diary_entry2)
+diary.show_mobile_list # => ["08001231235", "08001234322"]
+
+#19 - given two instances of diary entry, both containing the same phone number
+
+diary = Diary.new
+diary_entry1 = DiaryEntry.new("08001231237")
+diary_entry2 = DiaryEntry.new("08001231237")
+diary.add(diary_entry1)
+diary.add(diary_entry2)
+diary.show_mobile_list # => ["08001231237"]
 
 ```
 
