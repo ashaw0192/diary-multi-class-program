@@ -125,19 +125,19 @@ end
 
 #__Unit tests: Diary___ 
 
-#1 - prints an empty array 
+#1 - prints an empty array [X]
 
 diary = Diary.new 
 diary.display # => []
 
-#2 - if no diary entries, best entry method raises error
+#2 - if no diary entries, best entry method raises error [X]
 
 diary = Diary.new 
 diary.best_entry # => "no entries fit your specification"
 
 #___Unit tests: Diary_entry__
 
-#1 - if no diary entry
+#1 - if diary entry is an empty string [X]
 
 diary_entry = DiaryEntry.new("")
 diary_entry.contains_todo? # => false
@@ -145,25 +145,25 @@ diary_entry.contents # => ""
 diary_entry.length_of_entry # => 0
 diary_entry.contains_mobile_number? # => false
 
-#2 - Returns a diary entry 
+#2 - Returns a diary entry [X]
 
 diary_entry = DiaryEntry.new("Example entry.")
 diary_entry.contents # => "Example entry."
 
-#3 - Calculates entry length 
+#3 - Calculates entry length [X]
 
 diary_entry = DiaryEntry.new("Example entry.")
-diary_entry.length_of_contents # => "2"
+diary_entry.length_of_entry # => "2"
 
-#4 - Diary entry containing no todo
+#4 - Diary entry containing no todo [X]
 
 diary_entry = DiaryEntry.new("today I wrote some code")
 diary_entry.contains_todo? # => false
 
-#5 - Diary entry containing todo
+#5 - Diary entry containing todo [X]
 
 diary_entry1 = DiaryEntry.new("today I need to write some code #TODO.")
-diary_entry2 = DiaryEntry.new("today I need #TODO some code.|")
+diary_entry2 = DiaryEntry.new("today I need #TODO some code.")
 diary_entry3 = DiaryEntry.new("#TODO today I need to write some code.")
 diary_entry4 = DiaryEntry.new("#TODO: today I need to write some code.")
 diary_entry5 = DiaryEntry.new("(#TODO) today I need to write some code.")
@@ -173,16 +173,14 @@ diary_entry3.contains_todo? # => true
 diary_entry4.contains_todo? # => true
 diary_entry5.contains_todo? # => true
 
-#6 - Diary entries containing no, or the wrong formatted, todo
+#6 - Diary entries containing no, or the wrong formatted, todo [X]
 
 diary_entry1 = DiaryEntry.new("today I need todo something, i'm so bored.")
-diary_entry2 = DiaryEntry.new("today I need some codein.")
 diary_entry3 = DiaryEntry.new("#todo today I need to write some code.")
 diary_entry4 = DiaryEntry.new("#TO DO today I cold.")
 diary_entry5 = DiaryEntry.new("#TO-DO I need to write some code.")
 diary_entry6 = DiaryEntry.new("#TODO")
 diary_entry1.contains_todo? # => false
-diary_entry2.contains_todo? # => false
 diary_entry3.contains_todo? # => false
 diary_entry4.contains_todo? # => false
 diary_entry5.contains_todo? # => false
@@ -190,7 +188,7 @@ diary_entry6.contains_todo? # => false
 
 # .... .split(".", "?", "!").select{&:include?( "#TODO" )} .... ?
 
-#7 Given an entry that contains a string containing only letters 
+#7 Given an entry that contains a string containing only letters [X]
 
 diary_entry1 = DiaryEntry.new("today I need todo something, i'm so bored.")
 diary_entry1.contains_mobile_number? # => false
@@ -247,7 +245,7 @@ diary_entry1.contains_mobile_number? # => true
 
 #__Integration tests___ 
 
-#1 - adds a diary entry created by to_do.list class
+#1 - adds a diary entry created by diary entry class 
 
 diary = Diary.new
 diary_entry = DiaryEntry.new("today I wrote some code")
@@ -345,35 +343,42 @@ diary_entry1 = DiaryEntry.new("feed cat #TODO")
 diary_entry2 = DiaryEntry.new("#TODO find cat again")
 diary.show_todo_list # => ["feed cat #TODO", "#TODO find cat again"]
 
-#14 - given a diary entry of an empty string, show mobile numbers returns an empty list
+#14 - given two identical todos
+
+diary = Diary.new
+diary_entry1 = DiaryEntry.new("feed cat #TODO")
+diary_entry2 = DiaryEntry.new("feed cat #TODO")
+diary.show_todo_list # => ["feed cat #TODO"]
+
+#15 - given a diary entry of an empty string, show mobile numbers returns an empty list
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("")
 diary.add(diary_entry1)
 diary.show_mobile_list # => []
 
-#15 - given a non empty string wherein contains mobile number is false 
+#16 - given a non empty string wherein contains mobile number is false 
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("#TODO")
 diary.add(diary_entry1)
 diary.show_mobile_list # => []
 
-#16 - given a diary entry which only contains a phone number
+#17 - given a diary entry which only contains a phone number
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("08001231234")
 diary.add(diary_entry1)
 diary.show_mobile_list # => ["08001231234"]
 
-#17 - given a diary entry containing two phone numbers
+#18 - given a diary entry containing two phone numbers
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("08001231234: old number, 08001234321: new number")
 diary.add(diary_entry1)
 diary.show_mobile_list # => ["08001231234", "08001234321"]
 
-#18 - given two instances of diary entry, each containing a phone number
+#19 - given two instances of diary entry, each containing a phone number
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("08001231235: old number")
@@ -382,7 +387,7 @@ diary.add(diary_entry1)
 diary.add(diary_entry2)
 diary.show_mobile_list # => ["08001231235", "08001234322"]
 
-#19 - given two instances of diary entry, both containing the same phone number
+#20 - given two instances of diary entry, both containing the same phone number
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("08001231237")
@@ -391,6 +396,15 @@ diary.add(diary_entry1)
 diary.add(diary_entry2)
 diary.show_mobile_list # => ["08001231237"]
 
+#21 - given a complicated succession of diary entries containing multiple sentences, todos, and mobiles
+diary = Diary.new
+diary_entry1 = DiaryEntry.new("Today was a good day! #TODO stay positive!")
+diary_entry2 = DiaryEntry.new("Michael is 21. He gave me his mobile number 07888999111. Call Michael #TODO")
+diary.add(diary_entry1)
+diary.add(diary_entry2)
+diary.display # => ["Today was a good day! #TODO stay positive!", "Michael is 21. He gave me his mobile number 07888999111. Call Michael #TODO"]
+diary.show_todo_list # => ["#TODO stay positive", "Call Michael #TODO"]
+diary.show_mobile_list # => ["07888999111"]
 ```
 
 ## 4. Implement the Behaviour
