@@ -119,7 +119,7 @@ end
 
 ```
 
-## 3. Create Examples as Integration Tests
+## 3. Create Examples as Integration Tests and Unit Tests
 
 ```Ruby
 
@@ -137,14 +137,59 @@ diary.best_entry # => "no entries fit your specification"
 
 #___Unit tests: Diary_entry__
 
-#1 - Returns a diary entry 
+#1 - if no diary entry
+
+diary_entry = DiaryEntry.new("")
+diary_entry.contains_todo? # => false
+diary_entry.contents # => ""
+diary_entry.length_of_entry # => 0
+diary_entry.contains_mobile_number? # =>
+
+#2 - Returns a diary entry 
 
 diary_entry = DiaryEntry.new("today I wrote some code")
 diary_entry.contents # => "today I wrote some code"
 
-#2 - Calculates entry length 
+#3 - Calculates entry length 
+
 diary_entry = DiaryEntry.new("today I wrote some code")
-diary_entry.length # => "5"
+diary_entry.length_of_contents # => "5"
+
+#4 - Diary entry containing no todo
+
+diary_entry = DiaryEntry.new("today I wrote some code")
+diary_entry.contains_todo? # => false
+
+#5 - Diary entry containing todo
+
+diary_entry1 = DiaryEntry.new("today I need to write some code #TODO".)
+diary_entry2 = DiaryEntry.new("today I need #TODO some code.|")
+diary_entry3 = DiaryEntry.new("#TODO today I need to write some code".)
+diary_entry4 = DiaryEntry.new("#TODO: today I need to write some code".)
+diary_entry5 = DiaryEntry.new("(#TODO) today I need to write some code".)
+diary_entry1.contains_todo? # => true
+diary_entry2.contains_todo? # => true
+diary_entry3.contains_todo? # => true
+diary_entry4.contains_todo? # => true
+diary_entry5.contains_todo? # => true
+
+#6 - Diary entries containing no, or the wrong formatted, todo
+
+diary_entry1 = DiaryEntry.new("today I need todo something, i'm so bored".)
+diary_entry2 = DiaryEntry.new("today I need some codein.")
+diary_entry3 = DiaryEntry.new("#todo today I need to write some code".)
+diary_entry4 = DiaryEntry.new("#TO DO today I cold".)
+diary_entry5 = DiaryEntry.new("#TO-DO I need to write some code".)
+diary_entry6 = DiaryEntry.new("#TODO")
+diary_entry1.contains_todo? # => false
+diary_entry2.contains_todo? # => false
+diary_entry3.contains_todo? # => false
+diary_entry4.contains_todo? # => false
+diary_entry5.contains_todo? # => false
+diary_entry6.contains_todo? # => false
+
+# .... .split(".", "?", "!").select{&:include?( "#TODO" )} .... ?
+
 
 #__Integration tests___ 
 
@@ -208,30 +253,48 @@ diary.add(diary_entry2)
 diary.best_entry(60,1) # => "Tuesday " * 59 
 
 #8 - given an empty string as a diary entry, adds it to diary list and returns it 
+
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("")
 diary.add(diary_entry1)
 diary.display # => [""]
 
+#9 - given a diary contents containing no todos
+
+diary = Diary.new
+diary_entry = DiaryEntry.new("")
+diary.show_todo_list # => []
+
+#10 - given a non todo
+
+diary = Diary.new
+diary_entry = DiaryEntry.new("saw a fun cat :)")
+diary.show_todo_list # => []
+
+#11 - given a todo
+
+diary = Diary.new
+diary_entry = DiaryEntry.new("#TODO find cat")
+diary.show_todo_list # => ["#TODO find cat"]
+
+#12 - given two diary entries only one is a todo
+
+diary = Diary.new
+diary_entry1 = DiaryEntry.new("cat gone :(")
+diary_entry2 = DiaryEntry.new("#TODO find cat again")
+diary.show_todo_list # => ["#TODO find cat again"]
+
+#13 - given two todos
+
+diary = Diary.new
+diary_entry1 = DiaryEntry.new("feed cat #TODO")
+diary_entry2 = DiaryEntry.new("#TODO find cat again")
+diary.show_todo_list # => ["feed cat #TODO", "#TODO find cat again"]
+
+
 ```
-## TONY NOTE
-# def phone(string)
-  num = string.scan(/\d{11}/).to_s.split("/n")
-  puts num
-  return num
-end
 
-Create examples of the classes being used together in different situations and combinations that reflect the ways in which the system will be used.
-
-Encode one of these as a test and move to step 4.
-
-## 4. Create Examples as Unit Tests
-
-Create examples, where appropriate, of the behaviour of each relevant class at a more granular level of detail.
-
-Encode one of these as a test and move to step 5.
-
-## 5. Implement the Behaviour
+## 4. Implement the Behaviour
 
 For each example you create as a test, implement the behaviour that allows the class to behave according to your example.
 
