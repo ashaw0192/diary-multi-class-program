@@ -143,17 +143,17 @@ diary_entry = DiaryEntry.new("")
 diary_entry.contains_todo? # => false
 diary_entry.contents # => ""
 diary_entry.length_of_entry # => 0
-diary_entry.contains_mobile_number? # =>
+diary_entry.contains_mobile_number? # => false
 
 #2 - Returns a diary entry 
 
-diary_entry = DiaryEntry.new("today I wrote some code")
-diary_entry.contents # => "today I wrote some code"
+diary_entry = DiaryEntry.new("Example entry.")
+diary_entry.contents # => "Example entry."
 
 #3 - Calculates entry length 
 
-diary_entry = DiaryEntry.new("today I wrote some code")
-diary_entry.length_of_contents # => "5"
+diary_entry = DiaryEntry.new("Example entry.")
+diary_entry.length_of_contents # => "2"
 
 #4 - Diary entry containing no todo
 
@@ -162,11 +162,11 @@ diary_entry.contains_todo? # => false
 
 #5 - Diary entry containing todo
 
-diary_entry1 = DiaryEntry.new("today I need to write some code #TODO".)
+diary_entry1 = DiaryEntry.new("today I need to write some code #TODO.")
 diary_entry2 = DiaryEntry.new("today I need #TODO some code.|")
-diary_entry3 = DiaryEntry.new("#TODO today I need to write some code".)
-diary_entry4 = DiaryEntry.new("#TODO: today I need to write some code".)
-diary_entry5 = DiaryEntry.new("(#TODO) today I need to write some code".)
+diary_entry3 = DiaryEntry.new("#TODO today I need to write some code.")
+diary_entry4 = DiaryEntry.new("#TODO: today I need to write some code.")
+diary_entry5 = DiaryEntry.new("(#TODO) today I need to write some code.")
 diary_entry1.contains_todo? # => true
 diary_entry2.contains_todo? # => true
 diary_entry3.contains_todo? # => true
@@ -175,11 +175,11 @@ diary_entry5.contains_todo? # => true
 
 #6 - Diary entries containing no, or the wrong formatted, todo
 
-diary_entry1 = DiaryEntry.new("today I need todo something, i'm so bored".)
+diary_entry1 = DiaryEntry.new("today I need todo something, i'm so bored.")
 diary_entry2 = DiaryEntry.new("today I need some codein.")
-diary_entry3 = DiaryEntry.new("#todo today I need to write some code".)
-diary_entry4 = DiaryEntry.new("#TO DO today I cold".)
-diary_entry5 = DiaryEntry.new("#TO-DO I need to write some code".)
+diary_entry3 = DiaryEntry.new("#todo today I need to write some code.")
+diary_entry4 = DiaryEntry.new("#TO DO today I cold.")
+diary_entry5 = DiaryEntry.new("#TO-DO I need to write some code.")
 diary_entry6 = DiaryEntry.new("#TODO")
 diary_entry1.contains_todo? # => false
 diary_entry2.contains_todo? # => false
@@ -190,6 +190,60 @@ diary_entry6.contains_todo? # => false
 
 # .... .split(".", "?", "!").select{&:include?( "#TODO" )} .... ?
 
+#7 Given an entry that contains a string containing only letters 
+
+diary_entry1 = DiaryEntry.new("today I need todo something, i'm so bored.")
+diary_entry1.contains_mobile_number? # => false
+
+#8 Entry contains only a number(s) but NOT a phone number, returns false
+
+diary_entry1 = DiaryEntry.new("1234")
+diary_entry1.contains_mobile_number? # => false
+
+#9 Entry contains a number(s) and text but NOT a phone number, returns false
+
+diary_entry1 = DiaryEntry.new("today I coded for 8 hours")
+diary_entry1.contains_mobile_number? # => false
+
+#9 Diary entry ONLY contains phone number
+
+diary_entry1 = DiaryEntry.new("08001231234")
+diary_entry1.contains_mobile_number? # => true
+
+#10 Entry contains phone number and text 
+
+diary_entry1 = DiaryEntry.new("jon mob: 08001231234")
+diary_entry1.contains_mobile_number? # => true
+
+#11 entry contains text, non phone numbers and phone num
+
+diary_entry1 = DiaryEntry.new("jon10 mob 2: 08001231234")
+diary_entry1.contains_mobile_number? # => true
+
+#12 entry contains a phone number with text within the 11 digits
+
+diary_entry1 = DiaryEntry.new("(08)001231234")
+diary_entry1.contains_mobile_number? # => false
+
+#12 entry contains a number longer than 11 digits 
+
+diary_entry1 = DiaryEntry.new("8123456789123")
+diary_entry1.contains_mobile_number? # => false
+
+#12 entry contains a 11 digit phone number within a word
+
+diary_entry1 = DiaryEntry.new("(01234567893)")
+diary_entry1.contains_mobile_number? # => true
+
+#13 11 digits in a row with white space in between 
+
+diary_entry1 = DiaryEntry.new("0 1 2 3 4 5 6 7 8 9 3")
+diary_entry1.contains_mobile_number? # => false
+
+#14 entry contains a non phone number digit followed by a phone number 
+
+diary_entry1 = DiaryEntry.new("here is Jon's phone number 2022 01234567893")
+diary_entry1.contains_mobile_number? # => true
 
 #__Integration tests___ 
 
