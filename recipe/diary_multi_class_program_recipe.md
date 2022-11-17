@@ -391,7 +391,7 @@ diary.add(diary_entry1)
 diary.add(diary_entry2)
 diary.show_mobile_list # => ["08001231235", "08001234322"]
 
-#20 - given two instances of diary entry, both containing the same phone number 
+#20 - given two instances of diary entry, both containing the same phone number [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("08001231237")
@@ -400,7 +400,7 @@ diary.add(diary_entry1)
 diary.add(diary_entry2)
 diary.show_mobile_list # => ["08001231237"]
 
-#21 - given a complicated succession of diary entries containing multiple sentences, todos, and mobiles
+#21 - given a complicated succession of diary entries containing multiple sentences, todos, and mobiles [X]
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("Today was a good day! #TODO stay positive!")
 diary_entry2 = DiaryEntry.new("Michael is 21. He gave me his mobile number 07888999111. Call Michael #TODO")

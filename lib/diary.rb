@@ -1,4 +1,3 @@
-require './lib/diary_entry'
 class Diary 
 
   def initialize
@@ -24,9 +23,11 @@ class Diary
 
   def add(entry)
     @diary_list.push(entry)
-    array = entry.contents.split(/[.,\!,\?]/)
-    array.each { |sentence| @todo_list << sentence.strip if sentence.include?("#TODO") }
-    @mobile_numbers.push(entry.contents.scan(/\d{11}/)) if (entry).contains_mobile_number?
+    if entry.contains_todo?
+      array = entry.contents.split(/[.,\!,\?]/)
+      array.each { |sentence| @todo_list << sentence.strip if sentence.include?("#TODO") }
+    end
+    @mobile_numbers.push(entry.contents.scan(/\d{11}/)) if entry.contains_mobile_number?
   end 
 
   def show_todo_list

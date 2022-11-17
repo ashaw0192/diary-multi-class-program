@@ -11,8 +11,6 @@ class DiaryEntry
     @text.split.length
   end 
 
-  private
-
   def contains_todo?
     return false if @text.split.length == 1
     @text.include?("#TODO")
