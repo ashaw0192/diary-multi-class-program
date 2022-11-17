@@ -104,7 +104,7 @@ RSpec.describe DiaryEntry do
 
     context "diary entry contains no numbers only letters" do
 
-      it "evalutes the string" do
+      it "evalutes the string" do 
         diary_entry1 = DiaryEntry.new("today I need todo something, i'm so bored.")
         expect(diary_entry1.contains_mobile_number?).to eq false
       end
@@ -118,8 +118,70 @@ RSpec.describe DiaryEntry do
       end
     end
 
-  end
+    context 'Entry contains only a number(s) but NOT a phone number' do 
+      it 'evaluates the string' do
+        diary_entry1 = DiaryEntry.new("1234")
+        expect(diary_entry1.contains_mobile_number?).to eq false
+      end 
+    end 
 
+    context 'Entry contains a number(s) and text but NOT a phone number' do
+      it 'evaluates the string' do
+        diary_entry1 = DiaryEntry.new("today I coded for 8 hours")
+        expect(diary_entry1.contains_mobile_number?).to eq false
+      end 
+    end 
+
+    context 'Entry contains phone number and text' do
+      it 'evaluates the string' do
+        diary_entry1 = DiaryEntry.new("jon mob: 08001231234")
+        expect(diary_entry1.contains_mobile_number?).to eq true
+      end 
+    end 
+
+    context 'entry contains text, non phone numbers and phone num' do
+      it 'evaluates the string' do
+        diary_entry1 = DiaryEntry.new("jon10 mob 2: 08001231234")
+        expect(diary_entry1.contains_mobile_number?).to eq true
+      end 
+    end 
+
+    context 'entry contains a phone number with text within the 11 digits' do
+      it 'evaluates the string' do
+        diary_entry1 = DiaryEntry.new("(08)001231234")
+        expect(diary_entry1.contains_mobile_number?).to eq false
+      end 
+    end 
+
+    context 'entry contains a number longer than 11 digits' do
+      xit 'evaluates the string' do
+        diary_entry1 = DiaryEntry.new("8123456789123")
+        expect(diary_entry1.contains_mobile_number?).to eq false
+      end 
+    end 
+
+    context 'entry contains a 11 digit phone number within a word' do
+      it 'evaluates the string' do
+        diary_entry1 = DiaryEntry.new("(01234567893)")
+        expect(diary_entry1.contains_mobile_number?).to eq true
+      end 
+    end
+
+    context '11 digits in a row with white space in between ' do
+      it 'evaluates the string' do
+        diary_entry1 = DiaryEntry.new("0 1 2 3 4 5 6 7 8 9 3")
+        expect(diary_entry1.contains_mobile_number?).to eq false
+      end 
+    end
+
+    context 'entry contains a non phone number digit followed by a phone number' do
+      it 'evaluates the string' do
+        diary_entry1 = DiaryEntry.new("here is Jon's phone number 2022 01234567893")
+        expect(diary_entry1.contains_mobile_number?).to eq true
+      end 
+    end
+
+  end
 
 
 end 

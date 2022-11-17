@@ -193,59 +193,59 @@ diary_entry6.contains_todo? # => false
 diary_entry1 = DiaryEntry.new("today I need todo something, i'm so bored.")
 diary_entry1.contains_mobile_number? # => false
 
-#8 Entry contains only a number(s) but NOT a phone number, returns false
+#8 Entry contains only a number(s) but NOT a phone number, returns false [x]
 
 diary_entry1 = DiaryEntry.new("1234")
 diary_entry1.contains_mobile_number? # => false
 
-#9 Entry contains a number(s) and text but NOT a phone number, returns false
+#9 Entry contains a number(s) and text but NOT a phone number, returns false [X]
 
 diary_entry1 = DiaryEntry.new("today I coded for 8 hours")
 diary_entry1.contains_mobile_number? # => false
 
-#9 Diary entry ONLY contains phone number
+#10 Diary entry ONLY contains phone number [X]
 
 diary_entry1 = DiaryEntry.new("08001231234")
 diary_entry1.contains_mobile_number? # => true
 
-#10 Entry contains phone number and text 
+#11 Entry contains phone number and text [X]
 
 diary_entry1 = DiaryEntry.new("jon mob: 08001231234")
 diary_entry1.contains_mobile_number? # => true
 
-#11 entry contains text, non phone numbers and phone num
+#12 entry contains text, non phone numbers and phone num [X]
 
 diary_entry1 = DiaryEntry.new("jon10 mob 2: 08001231234")
 diary_entry1.contains_mobile_number? # => true
 
-#12 entry contains a phone number with text within the 11 digits
+#13 entry contains a phone number with text within the 11 digits [X]
 
 diary_entry1 = DiaryEntry.new("(08)001231234")
 diary_entry1.contains_mobile_number? # => false
 
-#12 entry contains a number longer than 11 digits 
+#14 entry contains a number longer than 11 digits INCOMPLETE
 
 diary_entry1 = DiaryEntry.new("8123456789123")
 diary_entry1.contains_mobile_number? # => false
 
-#12 entry contains a 11 digit phone number within a word
+#15 entry contains a 11 digit phone number within a word [X]
 
 diary_entry1 = DiaryEntry.new("(01234567893)")
 diary_entry1.contains_mobile_number? # => true
 
-#13 11 digits in a row with white space in between 
+#16 11 digits in a row with white space in between [X]
 
 diary_entry1 = DiaryEntry.new("0 1 2 3 4 5 6 7 8 9 3")
 diary_entry1.contains_mobile_number? # => false
 
-#14 entry contains a non phone number digit followed by a phone number 
+#17 entry contains a non phone number digit followed by a phone number [X]
 
 diary_entry1 = DiaryEntry.new("here is Jon's phone number 2022 01234567893")
 diary_entry1.contains_mobile_number? # => true
 
 #__Integration tests___ 
 
-#1 - adds a diary entry created by diary entry class 
+#1 - adds a diary entry created by diary entry class [X]
 
 diary = Diary.new
 diary_entry = DiaryEntry.new("today I wrote some code")
@@ -253,7 +253,7 @@ diary.add(diary_entry)
 diary.display # => ["today I wrote some code"]
 
 
-#2 - returns 2 diary entries when 2 are added 
+#2 - returns 2 diary entries when 2 are added [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("today I wrote some code")
@@ -262,21 +262,21 @@ diary_entry2 = DiaryEntry.new("tomorrow I will write some more code")
 diary.add(diary_entry2)
 diary.display # => ["today I wrote some code", "tomorrow I will write some more code"]
 
-#3 - given one diary entry that is readable within wpm and time availble, returns entry 
+#3 - given one diary entry that is readable within wpm and time availble, returns entry [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("today " * 60)
 diary.add(diary_entry1)
 diary.best_entry(60,1) # => "today " * 60
 
-#4 - given one diary entry that is not readable within the time, raises error
+#4 - given one diary entry that is not readable within the time, raises error [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("tomorrow " * 61)
 diary.add(diary_entry1)
 diary.best_entry(60,1) # => "no entries fit your specification"
 
-#5 - given two diary entries, with only one readable within time, return that entry 
+#5 - given two diary entries, with only one readable within time, return that entry [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("tomorrow " * 61)
@@ -285,16 +285,16 @@ diary_entry2 = DiaryEntry.new("yesterday " * 59)
 diary.add(diary_entry2)
 diary.best_entry(60,1) # => "yesterday " * 59"
 
-#6 - given two diary entries of equal length return only one entry 
+#6 - given two diary entries of equal length return only one entry [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("tomorrow " * 60)
 diary.add(diary_entry1)
 diary_entry2 = DiaryEntry.new("yesterday " * 60)
 diary.add(diary_entry2)
-diary.best_entry(60,1) # => "tomorrow " * 60 || "yesterday " * 60
+diary.best_entry(60,1) # => returns the last entry
 
-#7 - given two diary entries readable within the time, ensure that 
+#7 - given two diary entries readable within the time, ensure that [X]
   #the larger of the two is returned
 
 diary = Diary.new
@@ -304,81 +304,85 @@ diary_entry2 = DiaryEntry.new("Tuesday " * 59)
 diary.add(diary_entry2)
 diary.best_entry(60,1) # => "Tuesday " * 59 
 
-#8 - given an empty string as a diary entry, adds it to diary list and returns it 
+#8 - given an empty string as a diary entry, adds it to diary list and returns it [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("")
 diary.add(diary_entry1)
 diary.display # => [""]
 
-#9 - given a diary contents containing no todos
+#9 - given a diary contents containing no todos [X]
 
 diary = Diary.new
 diary_entry = DiaryEntry.new("")
 diary.show_todo_list # => []
 
-#10 - given a non todo
+#10 - given a non todo [X]
 
 diary = Diary.new
 diary_entry = DiaryEntry.new("saw a fun cat :)")
 diary.show_todo_list # => []
 
-#11 - given a todo
+#11 - given a todo [X]
 
 diary = Diary.new
 diary_entry = DiaryEntry.new("#TODO find cat")
 diary.show_todo_list # => ["#TODO find cat"]
 
-#12 - given two diary entries only one is a todo
+#12 - given two diary entries only one is a todo [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("cat gone :(")
 diary_entry2 = DiaryEntry.new("#TODO find cat again")
 diary.show_todo_list # => ["#TODO find cat again"]
 
-#13 - given two todos
+#13 - given two todos [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("feed cat #TODO")
 diary_entry2 = DiaryEntry.new("#TODO find cat again")
+diary.add(diary_entry1)
+diary.add(diary_entry2)
 diary.show_todo_list # => ["feed cat #TODO", "#TODO find cat again"]
 
-#14 - given two identical todos
+#14 - given two identical todos [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("feed cat #TODO")
 diary_entry2 = DiaryEntry.new("feed cat #TODO")
+diary.add(diary_entry1)
+diary.add(diary_entry2)
 diary.show_todo_list # => ["feed cat #TODO"]
 
-#15 - given a diary entry of an empty string, show mobile numbers returns an empty list
+#15 - given a diary entry of an empty string, show mobile numbers returns an empty list [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("")
 diary.add(diary_entry1)
 diary.show_mobile_list # => []
 
-#16 - given a non empty string wherein contains mobile number is false 
+#16 - given a non empty string wherein contains mobile number is false [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("#TODO")
 diary.add(diary_entry1)
 diary.show_mobile_list # => []
 
-#17 - given a diary entry which only contains a phone number
+#17 - given a diary entry which only contains a phone number [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("08001231234")
 diary.add(diary_entry1)
 diary.show_mobile_list # => ["08001231234"]
 
-#18 - given a diary entry containing two phone numbers
+#18 - given a diary entry containing two phone numbers [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("08001231234: old number, 08001234321: new number")
 diary.add(diary_entry1)
 diary.show_mobile_list # => ["08001231234", "08001234321"]
 
-#19 - given two instances of diary entry, each containing a phone number
+#19 - given two instances of diary entry, each containing a phone number [X]
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("08001231235: old number")
@@ -387,7 +391,7 @@ diary.add(diary_entry1)
 diary.add(diary_entry2)
 diary.show_mobile_list # => ["08001231235", "08001234322"]
 
-#20 - given two instances of diary entry, both containing the same phone number
+#20 - given two instances of diary entry, both containing the same phone number 
 
 diary = Diary.new
 diary_entry1 = DiaryEntry.new("08001231237")
